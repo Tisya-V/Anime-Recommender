@@ -1,0 +1,174 @@
+#:import Factory kivy.factory.Factory
+#<MyPopup@Popup>
+#    id:addedPopup
+#    title:"Anime added!"
+#    size_hint:0.6,0.2
+#    pos_hint:{"x":0.2,"top":0.9}
+
+<TextInput>
+    multiline : False
+    size_hint:(1,0.5)
+    background_normal: ''
+    background_color: "#b6f2c8"
+
+<Label>
+    font_size:30
+
+
+#<SuggestedAnime>
+#    background_color: "#b6f2c8"
+#    font_size:12
+#    on_press:root.fillout(self.text)
+
+
+<MyLayout>
+
+    anime:anime
+    rating:rating
+    rating_label:rating_label
+    selected_anime_label:selected_anime_label
+
+    
+    do_default_tab: False
+    size_hint:1,1
+    pos_hint:{'center_x':0.5,'center_y':0.5}
+    tab_pos:"bottom_mid"
+    tab_width:self.width/3
+
+    TabbedPanelItem:
+        text:"Add Anime"
+        BoxLayout:
+            orientation:"vertical"
+            cols:1
+            size:1,1
+            spacing:20
+            padding:20
+
+            Label:
+                text:"Anime"
+            Label:
+                id:selected_anime_label
+                text:"None Selected"
+            TextInput:
+                id:anime
+                hint_text:"Start typing and select from the dropdown..."
+                
+                size_hint_y:None
+                
+                font_size:20
+                height:self.font_size + 20
+                on_text:
+                    self.background_color="#b6f2c8"
+                    root.anime_input(self.text)
+                
+
+            ScrollView:
+                size_hint_y:None
+                do_scroll_x:False
+                do_scroll_y:True
+
+
+                GridLayout:
+                    id:suggestions
+                    size:root.width, root.height
+                    size_hint_x:None
+                    size_hint_y:None
+                    cols:1
+                    height:0.3
+                    row_default_height:50
+                    row_force_default:True
+
+
+
+            Label:
+                text:"Rating"
+
+            Label:
+                id:rating_label
+                text:'1'
+            Slider:
+                id:rating
+                min:1
+                max:10
+                step:1
+                orientation:"horizontal"
+                on_value:root.slider(*args)
+
+
+            Button:
+                text:"Add Anime"
+                size_hint_y:None
+                height:50
+                background_normal: ''
+                background_color: "#45965e"
+                on_press:root.add_anime_button_pressed()
+                #on_release:Factory.MyPopup().open()
+
+    TabbedPanelItem:
+        text:"My Animes"
+        id:my_animes_tab
+
+        on_press:root.my_animes_tab_pressed()
+
+        ScrollView:
+            
+            GridLayout:
+
+                id:my_animes_gl
+                size:root.width, root.height
+                size_hint_x:None
+                size_hint_y:None
+                cols:2
+                height:0.3
+                row_default_height:50
+                row_force_default:True
+
+
+
+    TabbedPanelItem:
+        text:"Recommend Me!"
+        id:recommender_tab
+
+        on_press:root.recommender_tab_pressed()
+
+        BoxLayout:
+            id:recommender_bl
+            orientation:"vertical"
+            cols:1
+            size:1,1
+            spacing:20
+            padding:20
+
+            Label:
+                id:recommend_anime_label
+                text: ''
+                font_size:20
+                text_size: root.width,None
+                size: self.texture_size
+                halign:'center'
+                pos_hint:{'center_x':0.5}
+
+            Button
+                id:recommend_anime_button
+                text:"Recommend Anime!"
+
+                on_press:root.recommend_button_pressed()
+
+
+        
+
+
+<Added>
+    added_anime_label : added_anime_label
+
+    orientation:"vertical"
+    size:root.width,root.height
+    padding:20
+    
+    Label:
+        id:added_anime_label
+        text:''
+        font_size:15
+        text_size: root.width,None
+        size: self.texture_size
+
